@@ -6,10 +6,38 @@ int main()
 	std::cout << "Hello world\n";
 	BitField b1;
 	b1.print();
+    std::cout << std::endl;
 	b1.SetBit(25);
 	b1.SetBit(50);
 	b1.SetBit(75);
 	b1.print();
-	std::cout << sizeof(int)/4;
+    b1.ClrBit(50);
+    b1.print();
+	std::cout << "---------Class Set----------" << std::endl;
+
+	Set mySet(50);
+	mySet.IsEmpty();
+	mySet.Add(1);
+	mySet.Add(18);
+	mySet.Add(25);
+	mySet.Count();
+	mySet.print();
+	mySet.Del(25);
+	mySet.print();
+
+;	Set set2(20);
+	set2.Add(5);
+	set2.Add(2);
+	set2.Add(21);
+	set2.print();
+	std::cout << "Union: " << std::endl;
+	Set unionSet = mySet.Union(set2);
+	unionSet.Count();
+	unionSet.print();
+
+	Set intersectionSet = unionSet.Intersection(mySet);
+	std::cout << "Intersection: ";
+	intersectionSet.print();
+	
 	
 }

@@ -3,7 +3,7 @@
 #include <iostream>
 
 typedef int MyType;
-
+std::string Message = "Values is null";
 class BitField
 {
 private:
@@ -130,10 +130,35 @@ public:
         arr[i] = arr[i] ^ mask; 
     }
 
-    int GetCapacity() const { return n; }
+    int GetCapacity() const 
+    { 
+        return n; 
+    }
+
+    void UnionWith(const BitField& other)
+    {
+        int minSize = (size < other.size) ? size : other.size;
+        for (int i = 0; i < minSize; i++)
+        {
+            arr[i] |= other.arr[i];
+        }
+    }
+
+    void IntersectWith(const BitField& other)
+    {
+        int minSize = (size < other.size) ? size : other.size;
+        for (int i = 0; i < minSize; i++)
+        {
+            arr[i] &= other.arr[i];
+        }
+        for (int i = minSize; i < size; i++)
+        {
+            arr[i] = 0;
+        }
+    }
 };
 
-class Set
+class Set // класс множества. Объединения и пересечения.
 {
     BitField b1;
 public:
@@ -143,22 +168,27 @@ public:
     {
         if (k >= 0 && k < b1.GetCapacity())
             b1.SetBit(k);
+        else
+        {
+            std::cout << k << " - Value is not addet\n";
+        }
     }
 
-    void Del(int k)
+    void Del(int k) 
     {
         if (k >= 0 && k < b1.GetCapacity())
             b1.ClrBit(k);
     }
 
-    bool Contain(int k)  
+    bool Contain(int k) 
     {
-        if (k < 0 || k >= b1.GetCapacity())
+        if (k < 0 || k > b1.GetCapacity())
+            std::cout << "Unkown value\n";
             return false;
         return b1.GetBit(k) == 1;
     }
 
-    void print()  
+    void print()
     {
         std::cout << "Set elements: ";
         bool isEmpty = true;
@@ -178,15 +208,15 @@ public:
         std::cout << std::endl;
     }
 
-    void Clear()  
+    void Clear() 
     {
-        for (int i = 0; i < b1.GetCapacity(); i++)
+        for (int i = 0; i < b1.GetCapacity(); i++) 
         {
             b1.ClrBit(i);
         }
     }
-
-    int Count()  
+    
+    int Count()
     {
         int count = 0;
         for (int i = 0; i < b1.GetCapacity(); i++)
@@ -194,11 +224,38 @@ public:
             if (b1.GetBit(i) == 1)
                 count++;
         }
+        std::cout << "Counter values: " << count << std::endl;
         return count;
     }
 
     bool IsEmpty()
     {
+        std::cout << Message << std::endl;
         return Count() == 0;
     }
+
+    Set Union(const Set& other) const
+    {
+        int maxCapacity = (b1.GetCapacity() > other.b1.GetCapacity()) ?
+            b1.GetCapacity() : other.b1.GetCapacity();
+
+        Set result(maxCapacity);
+        result.b1 = this->b1; 
+        result.b1.UnionWith(other.b1);
+
+        return result;
+    }
+
+    Set Intersection(const Set& other) const
+    {
+        int minCapacity = (b1.GetCapacity() < other.b1.GetCapacity()) ?
+            b1.GetCapacity() : other.b1.GetCapacity();
+
+        Set result(minCapacity);
+        result.b1 = this->b1;
+        result.b1.IntersectWith(other.b1); 
+
+        return result;
+    }
+
 };
