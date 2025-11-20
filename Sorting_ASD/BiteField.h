@@ -156,6 +156,15 @@ public:
             arr[i] = 0;
         }
     }
+
+    void DifferenceWith(const BitField& other) 
+    {
+        int minSize = (size < other.size) ? size : other.size;
+        for (int i = 0; i < minSize; i++) 
+        {
+            arr[i] &= ~other.arr[i];
+        }
+    }
 };
 
 class Set // класс множества. Объединения и пересечения.
@@ -256,6 +265,23 @@ public:
         result.b1.IntersectWith(other.b1); 
 
         return result;
+    }
+
+    Set Difference(const Set& other) const
+    {
+        Set result(b1.GetCapacity());
+        result.b1 = this->b1; 
+        result.b1.DifferenceWith(other.b1); 
+
+        return result;
+    }
+
+    Set SymmetricDifference(const Set& other) const
+    {
+        Set unionSet = this->Union(other);
+        Set intersectionSet = this->Intersection(other);
+
+        return unionSet.Difference(intersectionSet);
     }
 
 };

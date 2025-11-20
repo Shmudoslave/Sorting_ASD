@@ -3,7 +3,7 @@
 
 int main() 
 {
-	std::cout << "Hello world\n";
+	/*std::cout << "Hello world\n";
 	BitField b1;
 	b1.print();
     std::cout << std::endl;
@@ -12,7 +12,7 @@ int main()
 	b1.SetBit(75);
 	b1.print();
     b1.ClrBit(50);
-    b1.print();
+    b1.print();*/
 	std::cout << "---------Class Set----------" << std::endl;
 
 	Set mySet(50);
@@ -30,14 +30,22 @@ int main()
 	set2.Add(2);
 	set2.Add(21);
 	set2.print();
-	std::cout << "Union: " << std::endl;
+
+	std::cout << "Union: ";
 	Set unionSet = mySet.Union(set2);
-	unionSet.Count();
 	unionSet.print();
 
 	Set intersectionSet = unionSet.Intersection(mySet);
 	std::cout << "Intersection: ";
 	intersectionSet.print();
+
+	Set difference = unionSet.Difference(mySet);
+	std::cout << "Difference: ";
+	difference.print();
 	
+	Set SymmDiff = unionSet.SymmetricDifference(set2);
+	std::cout << "SymmetricalDifference: ";
+	SymmDiff.print();
+
 	
 }
